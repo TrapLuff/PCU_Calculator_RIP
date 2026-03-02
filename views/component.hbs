@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Компонент №{{data.id}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="portrait-mode">
+  
+
+  <video autoplay muted loop class="background-video">
+        <source src="http://localhost:9000/psu-calculator/{{data.component.video}}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+  </video>
+
+  {{> header_min }} <!-- Подключаем шапку -->
+
+
+  <div class = "component-all">
+    
+    
+    <p class="component-other-text">{{data.component.description}}</p>
+    <p class="component-other-text">{{data.component.type}}</p>
+    <br>
+    <span class="component-other-text-gray">Макс. тепловыделение: {{data.component.tdp_up}} Вт.&nbsp;·</span>
+    <span class="component-other-text-gray">Баз. тепловыделение: {{data.component.tdp_typical}} Вт.</span>
+  <div class = "component-about">
+    <div class="component-img">
+        <img src="http://localhost:9000/psu-calculator/{{data.component.image}}" alt="{{data.component.title}} Logo" class="component-logo-mini">
+    </div>
+    <div class="component-title">
+        <p class="component-info-text">{{this.title}}</p>
+        <p class="component-info-text-status">Выбрано: 0</p>
+    </div>
+    
+    </div>
+
+  </div>
+</body>
+</html>

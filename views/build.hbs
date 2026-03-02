@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькулятор БП</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+ {{> header }}
+ <div class="header-content">
+    <h3>На данной странице вы можете увидеть итог расчёта необходимой мощности блока питания.</h3>
+  </div>  
+  <hr>
+  
+  <div class="result-container">
+    <p class="result-name">Итоги расчёта мощности БП </p> 
+    <p class="result-name">Номер заявки: #526408</p>
+    <p class="component-info-text">Компонентов: 2</p>
+    <p class="component-info-text">Пиковая нагрузка: 253 Вт </p>
+    <p class="component-info-text">Стандартная нагрузка: 200 Вт</p>
+    <p class="component-info-text">КПД (80 PLUS): 85%</p>
+    <p class="component-info-text">Рекомендуемая мощность БП: 300 Вт</p>
+  </div>
+  <hr class = "hr-delimit">
+  {{> menu }}
+</body>
+</html>
