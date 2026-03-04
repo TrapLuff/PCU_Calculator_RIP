@@ -60,6 +60,61 @@ export class PsuCalculatorService {
 
         return {
             buildID: build.id, 
+            status: build.status, 
+            componentsCount,
+            components,
+            upTotal,
+            typicalTotal,
+            efficiency: efficiency,
+            recommendedPower,
+        };
+    }
+
+    async getBuildById(buildId: number, userId: number): Promise<BuildDTO | null>{
+        const build = await this.buildRepo.findOne({
+        where: {
+            id: buildId,
+            creatorId: userId,
+            status: Not('DELETED'),
+            },
+        relations: [
+            'componentBuilds',
+            'componentBuilds.component',
+            ],
+        });
+
+        if (!build) return null;
+
+        const components = build.componentBuilds.map(cb => ({
+            id: cb.component.id,
+            title: cb.component.title,
+            isActive: cb.component.isActive,
+            image: cb.component.image,
+            tdp_up: cb.component.tdp_up,
+            tdp_typical: cb.component.tdp_typical,
+            quantity: cb.quantity,
+        }));
+
+        const upTotal = components.reduce(
+            (sum, c) => sum + c.tdp_up * c.quantity,
+            0
+        );
+        const typicalTotal = components.reduce(
+            (sum, c) => sum + c.tdp_typical * c.quantity,
+            0
+        );
+        const componentsCount = components.reduce(
+            (sum, c) => sum + c.quantity,
+            0
+        );
+        
+
+        const efficiency = build.efficiency; 
+        const recommendedPower = Math.ceil(upTotal * 100 / efficiency );
+
+        return {
+            buildID: build.id, 
+            status: build.status, 
             componentsCount,
             components,
             upTotal,

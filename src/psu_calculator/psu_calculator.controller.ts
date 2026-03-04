@@ -33,6 +33,7 @@ export class PsuCalculatorController {
     return {
       title: 'Список компонентов',
       hasDraft: !!build,
+      currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
       },
@@ -72,6 +73,7 @@ export class PsuCalculatorController {
     return {
       title: 'Список компонентов',
       hasDraft: !!build,
+      currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
         query: query || '',
@@ -113,6 +115,7 @@ export class PsuCalculatorController {
 
     return {
       title: `Заявка #${build.buildID}`,
+      currentUrl: '/build',
       data: {
         hasBuild: true,
         build,
@@ -122,11 +125,37 @@ export class PsuCalculatorController {
 
   }
 
+  @Get('build/:id')
+  @Render('build')
+  async getBuildById(@Param('id') id: string) {
+      const buildId = Number(id);
+      const userId = 1; 
+      const build = await this.PsuCalculatorService.getBuildById(buildId, userId);
+
+      if (!build) {
+      return {
+        title: 'Заявка отсутствует',
+        data: {
+          hasBuild: false,
+        },
+      };
+      }
+
+      return {
+        title: `Заявка #${build.buildID}`,
+        data: {
+          hasBuild: true,
+          build,
+          components: build.components,
+        },
+      };
+  }
+
   @Post('build/add-component/:componentId')
-  async addComponent(@Param('componentId') componentId: number) {
+  async addComponent(@Param('componentId') componentId: number,  @Res() res: Response, @Body() body: { returnUrl: string },) {
     const userId = 1; // временно для теста
     const cb = await this.PsuCalculatorService.addComponentToCurrentBuild(userId, componentId);
-    return { success: true, componentBuild: cb };
+    return res.redirect(body.returnUrl || '/components');
   } 
 
 

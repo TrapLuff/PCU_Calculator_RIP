@@ -1,5 +1,6 @@
 export interface BuildDTO {
   buildID: number; // или id
+  status: string;
   componentsCount: number;
   components: {
     id: number;

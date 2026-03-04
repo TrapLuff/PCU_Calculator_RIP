@@ -16,7 +16,10 @@
                 <p class="component-info-text">Базовое тепловыделение: {{this.tdp_typical}} Вт.</p>
                 <div class="component-info-status">
                   <p class="component-status">Выбрано: {{this.quantity}}</p>
-                    <button onclick="addComponent({{id}})">Добавить</button>
+                  <form action="/build/add-component/{{this.id}}" method="POST">
+                    <input type="hidden" name="returnUrl" value="{{../currentUrl}}">
+                    <button type="submit">Добавить</button>
+                  </form>
                 </div>
             </div>
         </div>
@@ -28,18 +31,3 @@
     </div>
   {{/each}}
 </div>
-
-<script>
-async function addComponent(componentId) {
-  const response = await fetch(`/build/add-component/${componentId}`, {
-    method: 'POST'
-  });
-
-  const result = await response.json();
-
-  if (result.success) {
-    // Перезагружаем текущую страницу
-    window.location.reload();
-  }
-}
-</script>

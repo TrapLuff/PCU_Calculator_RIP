@@ -11,20 +11,26 @@
     <h3>На данной странице вы можете увидеть итог расчёта необходимой мощности блока питания.</h3>
   </div>  
   <hr>
-  
+  {{#if data.hasBuild}}
   <div class="result-container">
-    <p class="result-name">Итоги расчёта мощности БП </p> 
-    <form action="/delete-build" method="POST">
-      <button type="submit">Удалить</button>
-    </form>
-    <p class="result-name">Номер заявки: #{{data.build.buildID}}</p>
-    
-    <p class="component-info-text">Компонентов: {{data.build.componentsCount}}</p>
-    <p class="component-info-text">Пиковая нагрузка: {{data.build.upTotal}} Вт </p>
-    <p class="component-info-text">Стандартная нагрузка: {{data.build.typicalTotal}} Вт</p>
-    <p class="component-info-text">КПД (80 PLUS): {{data.build.efficiency}}%</p>
-    <p class="component-info-text">Рекомендуемая мощность БП: {{data.build.recommendedPower}} Вт</p>
+      <p class="result-name">Итоги расчёта мощности БП </p> 
+      <form action="/delete-build" method="POST">
+        <button type="submit">Удалить</button>
+      </form>
+      <p class="result-name">Номер заявки: #{{data.build.buildID}} - {{data.build.status}}</p>
+      
+      <p class="component-info-text">Компонентов: {{data.build.componentsCount}}</p>
+      <p class="component-info-text">Пиковая нагрузка: {{data.build.upTotal}} Вт </p>
+      <p class="component-info-text">Стандартная нагрузка: {{data.build.typicalTotal}} Вт</p>
+      <p class="component-info-text">КПД (80 PLUS): {{data.build.efficiency}}%</p>
+      <p class="component-info-text">Рекомендуемая мощность БП: {{data.build.recommendedPower}} Вт</p>
   </div>
+  {{else}}
+  <div class="result-container">
+      <p class="result-name">Заявка отсутствует</p>
+  </div>
+  {{/if}}
+
   <hr class = "hr-delimit">
   {{> menu }}
 </body>
