@@ -1,0 +1,45 @@
+<div class="components-container">
+  {{#each data.components}}
+    {{#if this.isActive}}
+    <div class="component-item">
+        <div class="component-title">
+            <a href="/component/{{this.id}}">{{this.title}}</a>
+        </div>
+        <div class = "component-other">
+            <div class="component-img-main">
+              <a href="/component/{{this.id}}">
+                <img src="http://localhost:9000/psu-calculator/{{this.image}}" alt="{{this.title}} Logo" class="component-logo">
+              </a>
+            </div>
+            <div class="component-info">
+                <p class="component-info-text">Макс. тепловыделение: {{this.tdp_up}} Вт.</p>
+                <p class="component-info-text">Базовое тепловыделение: {{this.tdp_typical}} Вт.</p>
+                <div class="component-info-status">
+                  <p class="component-status">Выбрано: {{this.quantity}}</p>
+                    <button onclick="addComponent({{id}})">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+  {{else}}
+    <div class="component-item">
+      Список пуст
+    </div>
+  {{/each}}
+</div>
+
+<script>
+async function addComponent(componentId) {
+  const response = await fetch(`/build/add-component/${componentId}`, {
+    method: 'POST'
+  });
+
+  const result = await response.json();
+
+  if (result.success) {
+    // Перезагружаем текущую страницу
+    window.location.reload();
+  }
+}
+</script>

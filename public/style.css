@@ -1,0 +1,276 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:  #111111;
+    background-image: url('img/background.png');
+    color: #ffffff;
+    margin: 0;
+    width: 100%;
+}
+
+a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+header{
+    overflow: hidden;
+}
+
+hr {
+    border:1px solid gray;
+}
+
+.hr-delimit {
+    margin: 20px 50px;
+}
+
+h3{
+    padding: 20px 30px;
+    margin: 0px;
+    color: rgb(191, 191, 191);
+}
+
+.header-up {
+    display: flex;
+    align-items: center;        /* выравнивание по вертикали */
+    justify-content: space-between; /* разносит по краям */
+    
+    margin: 0;             /* центр */
+    padding: 0 30px;
+}
+
+.body-up {
+    display: flex;
+    align-items: center;        /* выравнивание по вертикали */
+    justify-content: space-between; /* разносит по краям */
+              /* центр */
+    margin: 0 30px;
+}
+
+button {
+    background-color: #f08000;
+    border-style: none;
+    border-radius: 6px;
+    color: white;
+    height: 30px;
+    width: 120px;
+    margin: 20px 10px;
+}
+
+input {
+    background-color: black;
+    border-style: solid;
+    height: 24px;
+    width: 220px;
+    border-radius: 6px;
+    color: white;
+    box-shadow: none;
+    
+    outline: none;
+    margin: 20px 10px 0 0;
+}
+
+form {
+    display: flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+p {
+    color:#ffffff;
+}
+
+hr {
+    margin: 0;
+}
+
+.order-text {
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333;
+}
+
+.header-logo {
+    height: 60px;
+    width: auto;
+    cursor: pointer;
+}
+
+.mini-logo {
+    height: 50px;
+    cursor: pointer;
+}
+
+.header-content {
+    background-color: #000;
+    padding: 0px 0;
+    gap: 0;
+}
+
+.header-content-min {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0px 0;
+    gap: 0;
+}
+
+
+.header-background {
+    height: 150px;
+    width: auto;
+    cursor: pointer;
+}
+
+.component-logo {
+    height: 130px;
+    width: auto;
+    cursor: pointer;
+}
+
+.component-logo-mini {
+    height: 80px;
+    width: auto;
+}
+
+.components-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 колонки одинаковой ширины */
+    gap: 20px; /* расстояние между карточками, регулируемое */
+    padding: 0; /* убираем внутренние отступы контейнера */
+    margin: 10px 30px;  /* убираем внешние отступы контейнера */
+}
+
+.component-item {
+    border: 2px solid white;
+    border-radius: 12px;
+    padding: 16px 16px 0 16px;
+    margin: 0; /* убираем все margin */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; /* занимает всю ширину ячейки */
+    box-sizing: border-box; /* чтобы border и padding не ломали ширину */
+}
+
+.component-other {
+    display: flex;
+    flex-direction: row; /* img слева, info справа */
+    gap: 12px;
+    align-items: flex-start; /* чтобы верх выровнен был */
+}
+
+.component-title {
+    display: flex;
+    min-height: 40px;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.component-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.component-info-text {
+    padding: 3px 0;
+}
+
+.component-status {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.result-name {
+    font-weight: 700;
+    font-size: 22px;
+    margin: 5px 0;
+}
+
+.result-container {
+    margin: 0px;
+}
+
+.btn-wrapper {
+    margin: 20px 10px;
+}
+
+.background-video {
+    position: fixed;
+    inset: 0;
+    width: 100wh;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+.portrait-mode {
+    background-image: none;
+    position: relative;
+    min-height: 100vh;
+    width: 56vh;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.component-info-text{
+    margin: 0px;
+}
+
+.component-info-text-status{
+    margin: 0px;
+    font-weight: bold;
+}
+
+.result-container{
+    padding: 0px 30px;
+}
+
+.component-about{
+    background-color: rgba(28, 28, 28, 0.95);
+    border-radius: 20px;
+    margin-top: 0px;
+    gap: 10px;
+    display:flex;
+}
+
+.component-all{
+    margin: auto 20px 10px 20px;
+}
+
+.component-other-text{
+    font-size: 14px;
+    margin: 5px 0 0 0;
+    display: inline-block
+}
+
+.component-other-text-gray{
+    font-size: 14px;
+    margin: 0 0 5px 0;
+    display: inline-block;
+    color: rgb(148, 148, 148);
+}
+
+.component-info-status {
+    display: flex;
+    justify-content: space-between; /* элементы по краям */
+    align-items: center;            /* по центру вертикали кнопка и текст */
+    margin-top: auto;               /* прижимает блок к низу */
+}
+
+.component-img-main {
+    padding-bottom: 6px;
+}
