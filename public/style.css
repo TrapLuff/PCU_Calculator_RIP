@@ -18,8 +18,12 @@ header{
     overflow: hidden;
 }
 
+hr {
+    border:1px solid gray;
+}
+
 .hr-delimit {
-    margin: 20px 30px;
+    margin: 20px 50px;
 }
 
 h3{
@@ -145,7 +149,7 @@ hr {
 .component-item {
     border: 2px solid white;
     border-radius: 12px;
-    padding: 16px;
+    padding: 16px 16px 0 16px;
     margin: 0; /* убираем все margin */
     display: flex;
     flex-direction: column;
@@ -163,6 +167,7 @@ hr {
 
 .component-title {
     display: flex;
+    min-height: 40px;
     flex-direction: column;
     gap: 10px;
     justify-content: center;
@@ -172,7 +177,7 @@ hr {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  height: 100%;
+  flex-grow: 1;
 }
 
 .component-info-text {
@@ -180,7 +185,6 @@ hr {
 }
 
 .component-status {
-  margin-top: 8px;
   font-weight: 600;
   color: #ffffff;
 }
@@ -231,11 +235,6 @@ hr {
     font-weight: bold;
 }
 
-.component-status {
-    margin-top: auto; 
-    margin-bottom: 0;    
-}
-
 .result-container{
     padding: 0px 30px;
 }
@@ -263,4 +262,15 @@ hr {
     margin: 0 0 5px 0;
     display: inline-block;
     color: rgb(148, 148, 148);
+}
+
+.component-info-status {
+    display: flex;
+    justify-content: space-between; /* элементы по краям */
+    align-items: center;            /* по центру вертикали кнопка и текст */
+    margin-top: auto;               /* прижимает блок к низу */
+}
+
+.component-img-main {
+    padding-bottom: 6px;
 }
