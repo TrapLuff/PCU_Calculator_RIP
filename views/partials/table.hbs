@@ -1,0 +1,33 @@
+<table class="psu-table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Макс. тепловыделение</th>
+      <th>Базовое тепловыделение</th>
+      <th>Выбрано</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data.components}}
+      {{#if this.isActive}}
+        <tr>
+          <!-- Название + картинка -->
+          <td>
+            <a href="/component/{{this.id}}" class="psu-name-link">
+              <img src="http://localhost:9000/psu-calculator/{{this.image}}" 
+                   alt="{{this.title}}" class="psu-img">
+              {{this.title}}
+            </a>
+          </td>
+          <td>{{this.tdp_up}} Вт</td>
+          <td>{{this.tdp_typical}} Вт</td>
+          <td>{{this.quantity}}</td>
+        </tr>
+      {{/if}}
+    {{else}}
+      <tr>
+        <td colspan="4">Список пуст</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

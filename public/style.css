@@ -274,3 +274,63 @@ hr {
 .component-img-main {
     padding-bottom: 6px;
 }
+
+
+.logo{
+  position: relative;
+  display: inline-block;
+}
+
+
+.logo .count {
+    position: absolute;
+    top: 34px;
+    right: 0px;
+
+    width: 20px;
+    height: 20px;
+
+    background: #f08000;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;              
+    align-items: center;        
+    justify-content: center;   
+
+    font-size: 12px;
+}
+
+.psu-table {
+     width: calc(100% - 60px);
+  border-collapse: collapse;
+  margin: 20px 30px;
+}
+
+.psu-table th,
+.psu-table td {
+  border: none;
+  padding: 8px;
+  text-align: left;
+}
+
+.psu-table tbody tr {
+  border-bottom: 1px solid #ddd; /* линия между строками */
+}
+
+.psu-table th {
+  border-bottom: 2px solid #aaa; /* линия под заголовком */
+}
+
+.psu-img {
+  width: 40px;
+  height: auto;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.psu-name-link {
+  display: flex;
+  align-items: center;
+}

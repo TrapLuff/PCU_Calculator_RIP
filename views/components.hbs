@@ -22,7 +22,9 @@
       </form>
 
       {{#if hasPower}}
-        <a href="/power" class="logo">
+        
+        <a href="/power/{{data.powerID}}" class="logo">
+        <span class="count">{{data.componentsCount}}</span>
           <img src="http://localhost:9000/psu-calculator/result-logo.png"
                alt="Результат"
                class="mini-logo">

@@ -36,6 +36,8 @@ export class PsuCalculatorController {
       currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
+        componentsCount: power?.componentsCount || 0,
+        powerID: power?.powerID,
       },
     };
   }
@@ -76,7 +78,9 @@ export class PsuCalculatorController {
       currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
+        componentsCount: power?.componentsCount || 0,
         query: query || '',
+        powerID: power?.powerID,
       },
     };
   }
@@ -126,30 +130,38 @@ export class PsuCalculatorController {
   }
 
   @Get('power/:id')
-  @Render('power')
-  async getPowerById(@Param('id') id: string) {
+async redirectNonDraft(
+  @Param('id') id: string,
+  @Res() res: Response
+) {
     const powerId = Number(id);
     const userId = 1;
 
     const power = await this.PsuCalculatorService.getPowerById(powerId, userId);
 
     if (!power) {
-      return {
-        title: 'Заявка отсутствует',
-        data: {
-          hasPower: false,
-        },
-      };
+        // если заявки нет — просто редирект на DRAFT
+        const draft = await this.PsuCalculatorService.getCurrentPower(userId);
+        if (draft) return res.redirect(`/power/${draft.powerID}`);
+        return res.redirect('/components');
     }
 
-    return {
-      title: `Заявка #${power.powerID}`,
-      data: {
-        hasPower: true,
-        power,
-        components: power.components,
-      },
-    };
+    // если заявка не DRAFT — редирект на DRAFT
+    if (power.status !== 'DRAFT') {
+        const draft = await this.PsuCalculatorService.getCurrentPower(userId);
+        if (draft) return res.redirect(`/power/${draft.powerID}`);
+        return res.redirect('/components');
+    }
+
+    // если DRAFT — рендерим страницу
+    return res.render('power', {
+        title: `Заявка #${power.powerID}`,
+        data: {
+            hasPower: true,
+            power,
+            components: power.components,
+        },
+    });
   }
 
   @Post('power/add-component/:componentId')
