@@ -1,5 +1,5 @@
-export interface BuildDTO {
-  buildID: number; // или id
+export interface PowerDTO {
+  powerID: number; // или id
   status: string;
   componentsCount: number;
   components: {

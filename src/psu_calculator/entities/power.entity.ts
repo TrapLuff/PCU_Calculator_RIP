@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
-import { ComponentBuild } from './component-build.entity';
+import { ComponentPower } from './component-power.entity';
 
-@Entity('builds')
-export class Build {
-  @PrimaryGeneratedColumn({ name: 'build_id' })
+@Entity('powers')
+export class Power {
+  @PrimaryGeneratedColumn({ name: 'power_id' })
   id: number;
 
   @Column({ length: 20 })
@@ -13,27 +13,26 @@ export class Build {
   @Column({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  @Column({ type: 'timestamp', name: 'completed_at', nullable: true})
+  @Column({ type: 'timestamp', name: 'completed_at', nullable: true })
   completedAt: Date;
 
   @Column({ nullable: true, name: 'moderator_id' })
   moderatorId?: number;
 
-  @ManyToOne(() => User, user => user.moderatedBuilds, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => User, user => user.moderatedPowers, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'moderator_id' })
   moderator?: User;
 
   @Column({ name: 'creator_id' })
   creatorId: number;
 
-  @ManyToOne(() => User, user => user.createdBuilds, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => User, user => user.createdPowers, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'creator_id' })
   creator: User;
 
   @Column()
   efficiency: number;
 
-  // Связь с components_builds
-  @OneToMany(() => ComponentBuild, cb => cb.build)
-  componentBuilds: ComponentBuild[];
+  @OneToMany(() => ComponentPower, cp => cp.power)
+  componentPowers: ComponentPower[];
 }

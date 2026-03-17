@@ -16,7 +16,7 @@
                 <p class="component-info-text">Базовое тепловыделение: {{this.tdp_typical}} Вт.</p>
                 <div class="component-info-status">
                   <p class="component-status">Выбрано: {{this.quantity}}</p>
-                  <form action="/build/add-component/{{this.id}}" method="POST">
+                  <form action="/power/add-component/{{this.id}}" method="POST">
                     <input type="hidden" name="returnUrl" value="{{../currentUrl}}">
                     <button type="submit">Добавить</button>
                   </form>

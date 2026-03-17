@@ -3,7 +3,7 @@ import type { Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { Component } from './entities/component.entity';
-import { PsuCalculatorService } from "./psu_calculator.service"
+import { PsuCalculatorService } from "./psu_calculator.service";
 
 @Controller()
 export class PsuCalculatorController {
@@ -19,20 +19,20 @@ export class PsuCalculatorController {
     const components = await this.componentRepo.find();
 
     const userId = 1;
-    const build = await this.PsuCalculatorService.getCurrentBuild(userId);
+    const power = await this.PsuCalculatorService.getCurrentPower(userId);
 
     const componentsWithQuantity = components.map(c => {
-    const cb = build?.components?.find(bc => bc.id === c.id);
-        return {
-          ...c,
-          quantity: cb ? cb.quantity : 0,
-          isActive: true,
-        };
+      const cp = power?.components?.find(pc => pc.id === c.id);
+      return {
+        ...c,
+        quantity: cp ? cp.quantity : 0,
+        isActive: true,
+      };
     });
 
     return {
       title: 'Список компонентов',
-      hasDraft: !!build,
+      hasPower: !!power,
       currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
@@ -59,113 +59,118 @@ export class PsuCalculatorController {
     }
     
     const userId = 1;
-    const build = await this.PsuCalculatorService.getCurrentBuild(userId);
+    const power = await this.PsuCalculatorService.getCurrentPower(userId);
 
     const componentsWithQuantity = components.map(c => {
-    const cb = build?.components?.find(bc => bc.id === c.id);
-        return {
-          ...c,
-          quantity: cb ? cb.quantity : 0,
-          isActive: true,
-        };
+      const cp = power?.components?.find(pc => pc.id === c.id);
+      return {
+        ...c,
+        quantity: cp ? cp.quantity : 0,
+        isActive: true,
+      };
     });
 
     return {
       title: 'Список компонентов',
-      hasDraft: !!build,
+      hasPower: !!power,
       currentUrl: '/components',
       data: {
         components: componentsWithQuantity,
         query: query || '',
       },
     };
-    }
-
-    @Get('component/:id')
-    @Render('component')
-    async getComponent(@Param('id') id: string) {
-      const component = await this.componentRepo.findOneBy({
-      id: Number(id),
-    });
-      return {
-        title: component ? component.title : 'Не найдено',
-        data: {
-          id,
-          current_date: new Date().toLocaleDateString(),
-          component,
-        },
-      };
-    }
-
-    @Get('build')
-    @Render('build')
-    async getCurrentBuild() {
-    const userId = 1; // временно
-
-    const build = await this.PsuCalculatorService.getCurrentBuild(userId);
-
-    if (!build) {
-    return {
-      title: 'Заявка отсутствует',
-      data: {
-        hasBuild: false,
-      },
-    };
-    }
-
-    return {
-      title: `Заявка #${build.buildID}`,
-      currentUrl: '/build',
-      data: {
-        hasBuild: true,
-        build,
-        components: build.components,
-      },
-    };
-
   }
 
-  @Get('build/:id')
-  @Render('build')
-  async getBuildById(@Param('id') id: string) {
-      const buildId = Number(id);
-      const userId = 1; 
-      const build = await this.PsuCalculatorService.getBuildById(buildId, userId);
+  @Get('component/:id')
+  @Render('component')
+  async getComponent(@Param('id') id: string) {
+    const component = await this.componentRepo.findOneBy({
+      id: Number(id),
+    });
 
-      if (!build) {
+    return {
+      title: component ? component.title : 'Не найдено',
+      data: {
+        id,
+        current_date: new Date().toLocaleDateString(),
+        component,
+      },
+    };
+  }
+
+  @Get('power')
+  @Render('power')
+  async getCurrentPower() {
+    const userId = 1;
+
+    const power = await this.PsuCalculatorService.getCurrentPower(userId);
+
+    if (!power) {
       return {
         title: 'Заявка отсутствует',
         data: {
-          hasBuild: false,
+          hasPower: false,
         },
       };
-      }
+    }
 
+    return {
+      title: `Заявка #${power.powerID}`,
+      currentUrl: '/power',
+      data: {
+        hasPower: true,
+        power,
+        components: power.components,
+      },
+    };
+  }
+
+  @Get('power/:id')
+  @Render('power')
+  async getPowerById(@Param('id') id: string) {
+    const powerId = Number(id);
+    const userId = 1;
+
+    const power = await this.PsuCalculatorService.getPowerById(powerId, userId);
+
+    if (!power) {
       return {
-        title: `Заявка #${build.buildID}`,
+        title: 'Заявка отсутствует',
         data: {
-          hasBuild: true,
-          build,
-          components: build.components,
+          hasPower: false,
         },
       };
+    }
+
+    return {
+      title: `Заявка #${power.powerID}`,
+      data: {
+        hasPower: true,
+        power,
+        components: power.components,
+      },
+    };
   }
 
-  @Post('build/add-component/:componentId')
-  async addComponent(@Param('componentId') componentId: number,  @Res() res: Response, @Body() body: { returnUrl: string },) {
-    const userId = 1; // временно для теста
-    const cb = await this.PsuCalculatorService.addComponentToCurrentBuild(userId, componentId);
+  @Post('power/add-component/:componentId')
+  async addComponent(
+    @Param('componentId') componentId: number,
+    @Res() res: Response,
+    @Body() body: { returnUrl: string },
+  ) {
+    const userId = 1;
+
+    await this.PsuCalculatorService.addComponentToCurrentPower(userId, componentId);
+
     return res.redirect(body.returnUrl || '/components');
-  } 
-
-
-  @Post('delete-build')
-  async deleteBuild(@Res() res: Response) {
-    const userId = 1; // временно
-
-    await this.PsuCalculatorService.deleteCurrentBuild(userId);
-
-    return res.redirect('/components'); // после удаления переходим к компонентам
   }
 
+  @Post('delete-power')
+  async deletePower(@Res() res: Response) {
+    const userId = 1;
+
+    await this.PsuCalculatorService.deleteCurrentPower(userId);
+
+    return res.redirect('/components');
+  }
 }

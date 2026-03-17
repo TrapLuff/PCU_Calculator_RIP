@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { ComponentBuild } from './component-build.entity';
+import { ComponentPower } from './component-power.entity';
 
 @Entity('components')
 export class Component {
@@ -30,6 +30,6 @@ export class Component {
   @Column({ type: 'varchar', length: 20 })
   type: string;
 
-  @OneToMany(() => ComponentBuild, cb => cb.component)
-  componentBuilds: ComponentBuild[];
+  @OneToMany(() => ComponentPower, cb => cb.component)
+  componentPowers: ComponentPower[];
 }

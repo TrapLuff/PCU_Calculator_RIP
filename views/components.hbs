@@ -7,31 +7,37 @@
 </head>
 <body>
   <main>
-    {{> header }} <!-- Подключаем шапку -->
+    {{> header }}
+
     <div class="header-content">
       <h3>Пожалуйста, выберите все компоненты системы, которые вы используете или планируете использовать в вашей системе.</h3>
     </div>
+
     <hr>
+
     <div class="body-up">
-    <form action="/components" method="POST" class="">
-      <input type="text" name="query" placeholder="Найти" value="{{data.query}}">
-      <button type="submit">Обновить</button>
-    </form>
-    {{#if hasDraft}}
-      <a href="/build" class="logo">
-        <img src="http://localhost:9000/psu-calculator/result-logo.png"
-            alt="Результат"
-            class="mini-logo">
-      </a>
-    {{else}}
-      <div class="logo">
-        <img src="http://localhost:9000/psu-calculator/no-result-logo.png"
-            alt="Нет сборки"
-            class="mini-logo">
-      </div>
-    {{/if}}
+      <form action="/components" method="POST">
+        <input type="text" name="query" placeholder="Найти" value="{{data.query}}">
+        <button type="submit">Обновить</button>
+      </form>
+
+      {{#if hasPower}}
+        <a href="/power" class="logo">
+          <img src="http://localhost:9000/psu-calculator/result-logo.png"
+               alt="Результат"
+               class="mini-logo">
+        </a>
+      {{else}}
+        <div class="logo">
+          <img src="http://localhost:9000/psu-calculator/no-result-logo.png"
+               alt="Нет сборки"
+               class="mini-logo">
+        </div>
+      {{/if}}
+
     </div>
-    {{> menu}}   <!-- Подключаем меню -->
+
+    {{> menu}}
   </main>
 </body>
 </html>

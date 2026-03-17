@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+ {{> header }}
+ <div class="header-content">
+    <h3>На данной странице вы можете увидеть итог расчёта необходимой мощности блока питания.</h3>
+  </div>  
+  <hr>
+
+  {{#if data.hasPower}}
+  <div class="result-container">
+      <p class="result-name">Итоги расчёта мощности БП</p>
+
+      <form action="/delete-power" method="POST">
+        <button type="submit">Удалить</button>
+      </form>
+
+      <p class="result-name">Номер заявки: #{{data.power.powerID}} - {{data.power.status}}</p>
+      
+      <p class="component-info-text">Компонентов: {{data.power.componentsCount}}</p>
+      <p class="component-info-text">Пиковая нагрузка: {{data.power.upTotal}} Вт</p>
+      <p class="component-info-text">Стандартная нагрузка: {{data.power.typicalTotal}} Вт</p>
+      <p class="component-info-text">КПД (80 PLUS): {{data.power.efficiency}}%</p>
+      <p class="component-info-text">Рекомендуемая мощность БП: {{data.power.recommendedPower}} Вт</p>
+  </div>
+
+  {{else}}
+  <div class="result-container">
+      <p class="result-name">Заявка отсутствует</p>
+  </div>
+  {{/if}}
+
+  <hr class="hr-delimit">
+  {{> menu }}
+</body>
+</html>

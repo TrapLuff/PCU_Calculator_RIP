@@ -1,177 +1,178 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ILike, Not, DataSource} from 'typeorm';
-import { ComponentBuild } from './entities/component-build.entity';
-import { Build } from './entities/build.entity';
-import { BuildDTO } from './dto/build.dto'
+import { Repository, ILike, Not, DataSource } from 'typeorm';
+import { ComponentPower } from './entities/component-power.entity';
+import { Power } from './entities/power.entity';
+import { PowerDTO } from './dto/power.dto';
 
 @Injectable()
 export class PsuCalculatorService {
     constructor(
-        @InjectRepository(Build)
-        private readonly buildRepo: Repository<Build>,
+        @InjectRepository(Power)
+        private readonly powerRepo: Repository<Power>,
 
-        @InjectRepository(ComponentBuild)
-        private readonly componentBuildRepo: Repository<ComponentBuild>,
+        @InjectRepository(ComponentPower)
+        private readonly componentPowerRepo: Repository<ComponentPower>,
 
         private readonly dataSource: DataSource,
     ) {}
 
-    async getCurrentBuild(userId: number): Promise<BuildDTO | null>{
-        const build = await this.buildRepo.findOne({
-        where: {
-            creatorId: userId,
-            status: ('DRAFT'),
+    async getCurrentPower(userId: number): Promise<PowerDTO | null> {
+        const power = await this.powerRepo.findOne({
+            where: {
+                creatorId: userId,
+                status: 'DRAFT',
             },
-        relations: [
-            'componentBuilds',
-            'componentBuilds.component',
+            relations: [
+                'componentPowers',
+                'componentPowers.component',
             ],
         });
 
-        if (!build) return null;
+        if (!power) return null;
 
-        const components = build.componentBuilds.map(cb => ({
-            id: cb.component.id,
-            title: cb.component.title,
-            isActive: cb.component.isActive,
-            image: cb.component.image,
-            tdp_up: cb.component.tdp_up,
-            tdp_typical: cb.component.tdp_typical,
-            quantity: cb.quantity,
+        const components = power.componentPowers.map(cp => ({
+            id: cp.component.id,
+            title: cp.component.title,
+            isActive: cp.component.isActive,
+            image: cp.component.image,
+            tdp_up: cp.component.tdp_up,
+            tdp_typical: cp.component.tdp_typical,
+            quantity: cp.quantity,
         }));
 
         const upTotal = components.reduce(
             (sum, c) => sum + c.tdp_up * c.quantity,
             0
         );
+
         const typicalTotal = components.reduce(
             (sum, c) => sum + c.tdp_typical * c.quantity,
             0
         );
+
         const componentsCount = components.reduce(
             (sum, c) => sum + c.quantity,
             0
         );
-        
 
-        const efficiency = build.efficiency; 
-        const recommendedPower = Math.ceil(upTotal * 100 / efficiency );
+        const efficiency = power.efficiency;
+        const recommendedPower = Math.ceil(upTotal * 100 / (efficiency ?? 85));
 
         return {
-            buildID: build.id, 
-            status: build.status, 
+            powerID: power.id,
+            status: power.status,
             componentsCount,
             components,
             upTotal,
             typicalTotal,
-            efficiency: efficiency,
+            efficiency: efficiency ?? 85,
             recommendedPower,
         };
     }
 
-    async getBuildById(buildId: number, userId: number): Promise<BuildDTO | null>{
-        const build = await this.buildRepo.findOne({
-        where: {
-            id: buildId,
-            creatorId: userId,
-            status: Not('DELETED'),
+    async getPowerById(powerId: number, userId: number): Promise<PowerDTO | null> {
+        const power = await this.powerRepo.findOne({
+            where: {
+                id: powerId,
+                creatorId: userId,
+                status: Not('DELETED'),
             },
-        relations: [
-            'componentBuilds',
-            'componentBuilds.component',
+            relations: [
+                'componentPowers',
+                'componentPowers.component',
             ],
         });
 
-        if (!build) return null;
+        if (!power) return null;
 
-        const components = build.componentBuilds.map(cb => ({
-            id: cb.component.id,
-            title: cb.component.title,
-            isActive: cb.component.isActive,
-            image: cb.component.image,
-            tdp_up: cb.component.tdp_up,
-            tdp_typical: cb.component.tdp_typical,
-            quantity: cb.quantity,
+        const components = power.componentPowers.map(cp => ({
+            id: cp.component.id,
+            title: cp.component.title,
+            isActive: cp.component.isActive,
+            image: cp.component.image,
+            tdp_up: cp.component.tdp_up,
+            tdp_typical: cp.component.tdp_typical,
+            quantity: cp.quantity,
         }));
 
         const upTotal = components.reduce(
             (sum, c) => sum + c.tdp_up * c.quantity,
             0
         );
+
         const typicalTotal = components.reduce(
             (sum, c) => sum + c.tdp_typical * c.quantity,
             0
         );
+
         const componentsCount = components.reduce(
             (sum, c) => sum + c.quantity,
             0
         );
-        
 
-        const efficiency = build.efficiency; 
-        const recommendedPower = Math.ceil(upTotal * 100 / efficiency );
+        const efficiency = power.efficiency;
+        const recommendedPower = Math.ceil(upTotal * 100 / (efficiency ?? 85));
 
         return {
-            buildID: build.id, 
-            status: build.status, 
+            powerID: power.id,
+            status: power.status,
             componentsCount,
             components,
             upTotal,
             typicalTotal,
-            efficiency: efficiency,
+            efficiency: efficiency ?? 85,
             recommendedPower,
         };
     }
 
-    async addComponentToCurrentBuild(userId: number, componentId: number){
-        let build = await this.buildRepo.findOne({
+    async addComponentToCurrentPower(userId: number, componentId: number) {
+    let power = await this.powerRepo.findOne({
         where: {
-            creatorId: userId,
-            status: ('DRAFT'),
-            },
-        relations: [
-            'componentBuilds',
-            'componentBuilds.component',
-            ],
-        });
-
-        if (!build) {
-            build = this.buildRepo.create({
             creatorId: userId,
             status: 'DRAFT',
-            efficiency: 85, // например дефолтное значение
+        },
+        relations: [
+            'componentPowers',
+            'componentPowers.component',
+        ],
+    });
+
+    if (!power) {
+        power = this.powerRepo.create({
+            creatorId: userId,
+            status: 'DRAFT',
+            efficiency: 85,
             createdAt: new Date(),
-            });
-
-            build = await this.buildRepo.save(build);
-        }
-        
-
-        let existing = await this.componentBuildRepo.findOne({
-            where: { buildId: build.id, componentId }
-        });
-        if (existing) {
-            existing.quantity += 1;
-            return this.componentBuildRepo.save(existing);
-        }
-
-        // Создаём новый ComponentBuild
-        const position = await this.componentBuildRepo.count({ where: { buildId: build.id } }) + 1;
-        const newCb = this.componentBuildRepo.create({
-            buildId: build.id,
-            componentId,
-            quantity: 1,
-            position,
         });
 
-        return this.componentBuildRepo.save(newCb);
+        power = await this.powerRepo.save(power);
     }
 
-    async deleteCurrentBuild(userId: number) {
+    let existing = await this.componentPowerRepo.findOne({
+        where: { powerId: power.id, componentId }
+    });
+
+    if (existing) {
+        // Если quantity было null, превращаем в 1
+        existing.quantity = (existing.quantity ?? 0) + 1;
+        return this.componentPowerRepo.save(existing);
+    }
+
+    // Создаём новый ComponentPower без position
+    const newCp = this.componentPowerRepo.create({
+        power: power,          // связываем объект Power
+        componentId: componentId,
+        quantity: 1,           // не nullable для новой записи
+    });
+
+    return this.componentPowerRepo.save(newCp);
+}
+
+    async deleteCurrentPower(userId: number) {
         await this.dataSource.query(
             `
-            UPDATE builds
+            UPDATE powers
             SET status = 'DELETED'
             WHERE creator_id = $1
             AND status = 'DRAFT'

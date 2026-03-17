@@ -3,8 +3,8 @@ import { PsuCalculatorService } from './psu_calculator.service';
 import { PsuCalculatorController } from './psu_calculator.controller';
 import { Component } from './entities/component.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ComponentBuild } from './entities/component-build.entity';
-import { Build } from './entities/build.entity'
+import { ComponentPower } from './entities/component-power.entity';
+import { Power } from './entities/power.entity'
 import { User } from './entities/user.entity'
 
 @Module({
@@ -15,11 +15,11 @@ import { User } from './entities/user.entity'
       port: 5432,
       username: 'root',
       password: 'root',
-      database: 'RIP',
+      database: 'RIP',  
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Component, Build, ComponentBuild, User])
+    TypeOrmModule.forFeature([Component, Power, ComponentPower, User])
   ],
   controllers: [PsuCalculatorController], // Здесь указываем контроллеры, которые будут частью модуля
   providers: [PsuCalculatorService] // Здесь указываем сервисы (провайдеры), доступные в модуле

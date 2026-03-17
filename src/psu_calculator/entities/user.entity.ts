@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Build } from './build.entity';
+import { Power } from './power.entity';
 
 @Entity('users')
 export class User {
@@ -19,9 +19,9 @@ export class User {
   fullName: string;
 
   // связи с builds
-  @OneToMany(() => Build, build => build.creator)
-  createdBuilds: Build[];
+  @OneToMany(() => Power, power => power.creator)
+  createdPowers: Power[];
 
-  @OneToMany(() => Build, build => build.moderator)
-  moderatedBuilds: Build[];
+  @OneToMany(() => Power, power => power.moderator)
+  moderatedPowers: Power[];
 }
