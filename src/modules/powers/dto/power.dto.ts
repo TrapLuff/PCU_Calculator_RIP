@@ -1,6 +1,10 @@
 export interface PowerDTO {
   powerID: number; // или id
   status: string;
+  upTotal: number;
+  typicalTotal: number;
+  efficiency: number;
+  recommendedPower: number;
   componentsCount: number;
   components: {
     id: number;
@@ -10,8 +14,5 @@ export interface PowerDTO {
     tdp_typical: number;
     quantity: number;
   }[];
-  upTotal: number;
-  typicalTotal: number;
-  efficiency: number;
-  recommendedPower: number;
+  
 }

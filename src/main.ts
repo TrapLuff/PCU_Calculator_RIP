@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { PsuCalculatorModule } from './psu_calculator/psu_calculator.module';
+import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
@@ -8,6 +9,14 @@ const hbs = require('hbs');
 async function bootstrap() {
 
   const app = await NestFactory.create<NestExpressApplication>(PsuCalculatorModule);
+
+  app.setGlobalPrefix('api');
+  // Валидация DTO
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }));
 
   // Подключаем Handlebars
   app.setBaseViewsDir(join(__dirname, '..', 'views')); //Указываем директорию с шаблонами

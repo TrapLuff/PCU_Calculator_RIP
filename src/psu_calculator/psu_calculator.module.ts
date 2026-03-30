@@ -1,27 +1,39 @@
 import { Module } from '@nestjs/common';
-import { PsuCalculatorService } from './psu_calculator.service';
-import { PsuCalculatorController } from './psu_calculator.controller';
-import { Component } from './entities/component.entity';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ComponentPower } from './entities/component-power.entity';
-import { Power } from './entities/power.entity'
-import { User } from './entities/user.entity'
+
+import { MinioModule } from '../modules/minio.module';
+import { DatabaseModule } from './database.module';
+
+import { ComponentsModule } from '../modules/components/components.module';
+import { PowersModule } from '../modules/powers/powers.module';
+import { UsersModule } from '../modules/users/users.module';
+import { ComponentsPowersModule } from '../modules/components-powers/components-powers.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5432,
       username: 'root',
       password: 'root',
-      database: 'RIP',  
+      database: 'RIP',
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Component, Power, ComponentPower, User])
+
+    MinioModule,
+    DatabaseModule,
+
+    ComponentsModule,
+    PowersModule,
+    UsersModule,
+    ComponentsPowersModule,
   ],
-  controllers: [PsuCalculatorController], // Здесь указываем контроллеры, которые будут частью модуля
-  providers: [PsuCalculatorService] // Здесь указываем сервисы (провайдеры), доступные в модуле
 })
 export class PsuCalculatorModule {}

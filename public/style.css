@@ -129,13 +129,13 @@ hr {
 
 .component-logo {
     height: 130px;
-    width: auto;
+    width: 130px;
     cursor: pointer;
 }
 
 .component-logo-mini {
     height: 80px;
-    width: auto;
+    width: 80px;
 }
 
 .components-container {
