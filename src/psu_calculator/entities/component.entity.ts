@@ -15,10 +15,10 @@ export class Component {
   @Column({ type: 'boolean', name: 'is_active' })
   isActive: boolean;
 
-  @Column({ type: 'varchar', length: 50, name: 'image_url', nullable: true })
+  @Column({ type: 'varchar', length: 255, name: 'image_url', nullable: true })
   image?: string;
 
-  @Column({ type: 'varchar', length: 50, name: 'video_url', nullable: true })
+  @Column({ type: 'varchar', length: 255, name: 'video_url', nullable: true })
   video?: string;
 
   @Column({ type: 'int', name: 'tdp_typical' })

@@ -9,7 +9,7 @@
   
 
   <video autoplay muted loop class="background-video">
-        <source src="http://localhost:9000/psu-calculator/{{data.component.video}}" type="video/mp4">
+        <source src="{{data.component.video}}" type="video/mp4">
         Ваш браузер не поддерживает видео.
   </video>
 
@@ -26,7 +26,7 @@
     <span class="component-other-text-gray">Баз. тепловыделение: {{data.component.tdp_typical}} Вт.</span>
   <div class = "component-about">
     <div class="component-img">
-        <img src="http://localhost:9000/psu-calculator/{{data.component.image}}" alt="{{data.component.title}} Logo" class="component-logo-mini">
+        <img src="{{data.component.image}}" alt="{{data.component.title}} Logo" class="component-logo-mini">
     </div>
     <div class="component-title">
         <p class="component-info-text">{{this.title}}</p>

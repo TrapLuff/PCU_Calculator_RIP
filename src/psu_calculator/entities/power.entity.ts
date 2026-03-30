@@ -13,6 +13,9 @@ export class Power {
   @Column({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
+  @Column({ type: 'timestamp', name: 'formed_at', nullable: true })
+  formedAt?: Date;
+
   @Column({ type: 'timestamp', name: 'completed_at', nullable: true })
   completedAt: Date;
 
@@ -30,8 +33,11 @@ export class Power {
   @JoinColumn({ name: 'creator_id' })
   creator: User;
 
-  @Column()
-  efficiency: number;
+  @Column({ nullable: true }) 
+  efficiency?: number;
+
+  @Column({ type: 'text', nullable: true })
+  description?: string;
 
   @OneToMany(() => ComponentPower, cp => cp.power)
   componentPowers: ComponentPower[];
